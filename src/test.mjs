@@ -20,6 +20,10 @@ const oddNumbers = numbers
   .filter(value => value % 2 !== 0)
   .each(value => console.log('Odd', value));
 
+const oddNumbersSum = oddNumbers
+  .reduce((acc, value) => acc + value, 0)
+  .each(value => console.log('Odd Sum', value));
+
 const oddNumbersAbove5 = oddNumbers
   .filter(value => value > 5)
   .each(value => console.log('Odd above 5', value))

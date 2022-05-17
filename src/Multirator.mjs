@@ -52,6 +52,10 @@ export default class Multirator {
     return new Multirator(map(this, func));
   }
 
+  reduce(func, initialValue) {
+    return new Multirator(reduce(this, func, initialValue));
+  }
+
   each(func) {
     return new Multirator(each(this, func));
   }
@@ -66,6 +70,14 @@ async function* filter(iterator, func) {
 async function* map(iterator, func) {
   for await (const value of iterator) {
     yield func(value);
+  }
+}
+
+async function* reduce(iterator, func, initialValue) {
+  let acc = initialValue;
+  for await (const value of iterator) {
+    acc = func(acc, value);
+    yield acc;
   }
 }
 
