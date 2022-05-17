@@ -12,9 +12,9 @@ async function* numberGenerator(max = 100) {
 
 const numbers = new Multirator(numberGenerator(10));
 
-// const evenNumbers = numbers
-//   .filter(value => value % 2 === 0)
-//   .each(value => console.log('Even', value));
+const evenNumbers = numbers
+  .filter(value => value % 2 === 0)
+  .each(value => console.log('Even', value));
 
 const oddNumbers = numbers
   .filter(value => value % 2 !== 0)
@@ -22,10 +22,12 @@ const oddNumbers = numbers
 
 const oddNumbersAbove5 = oddNumbers
   .filter(value => value > 5)
-  .each(value => console.log('Odd above 5', value));
+  .each(value => console.log('Odd above 5', value))
+  .map(value => ({ value }))
+  .each(value => console.log('Odd above 5 obj', value));
 
 
-//
-// for await (const value of numberGenerator(10)) {
-//   console.log(value);
-// }
+
+for await (const value of oddNumbersAbove5) {
+  console.log(value);
+}

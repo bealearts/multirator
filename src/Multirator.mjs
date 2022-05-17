@@ -38,7 +38,7 @@ export default class Multirator {
     this[Symbol.asyncIterator] = async function* () {
       if (!done && value !== undefined) yield value;
       while(!done) {
-        await pending;
+        await pending;  // TODO: Error handling
         if (!done) yield value;
       }
     }
@@ -48,6 +48,10 @@ export default class Multirator {
     return new Multirator(filter(this, func));
   }
 
+  map(func) {
+    return new Multirator(map(this, func));
+  }
+
   each(func) {
     return new Multirator(each(this, func));
   }
@@ -55,13 +59,19 @@ export default class Multirator {
 
 async function* filter(iterator, func) {
   for await (const value of iterator) {
-    console.log('filter', value);
     if (func(value)) yield value;
+  }
+}
+
+async function* map(iterator, func) {
+  for await (const value of iterator) {
+    yield func(value);
   }
 }
 
 async function* each(iterator, func) {
   for await (const value of iterator) {
-    yield func(value);
+    func(value);
+    yield value;
   }
 }
