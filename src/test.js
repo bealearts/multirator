@@ -1,4 +1,4 @@
-import Multirator from './Multirator.mjs';
+import Multirator from './Multirator.js';
 
 async function* numberGenerator(max = 100) {
   let num = 0;
