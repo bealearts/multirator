@@ -168,3 +168,23 @@ test("Supports multiple consumers with: reduce()", async () => {
   expect(result1).toEqual(55);
   expect(result2).toEqual(55);
 });
+
+test("Supports concatenating iterators", async () => {
+  const numbers = new Multirator(numberGenerator(10));
+
+  async function* letterGenerator(max = 100) {
+    let num = 0;
+    while (num < max) {
+      yield new Promise((resolve) => {
+        num++;
+        setTimeout(() => resolve(String.fromCharCode(64 + num)), 0);
+      });
+    }
+  }
+
+  const result = await numbers
+    .concat(letterGenerator(10))
+    .reduce((str, value) => str + value, "");
+
+  expect(result).toEqual("12345678910ABCDEFGHIJ");
+});

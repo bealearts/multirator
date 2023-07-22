@@ -17,7 +17,9 @@ export default class Iterator {
     return new Iterator(map(this, func));
   }
 
-  concat(...iterators) {}
+  concat(iterator) {
+    return new Iterator(concat(this, iterator));
+  }
 
   /* Leaf */
 
@@ -57,5 +59,15 @@ async function* reduce(iterator, func, initialValue) {
   for await (const value of iterator) {
     acc = func(acc, value);
     yield acc;
+  }
+}
+
+async function* concat(iterator1, iterator2) {
+  for await (const value of iterator1) {
+    yield value;
+  }
+
+  for await (const value of iterator2) {
+    yield value;
   }
 }
