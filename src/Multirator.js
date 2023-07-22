@@ -1,12 +1,5 @@
 export default class Multirator {
   constructor(iterator) {
-    // console.log(iterator.each);
-    // if (iterator instanceof Multirator) {
-    //   console.log('Multirator');
-    //   return;
-    // }
-
-
     let done = false;
     let value;
     let resolver;
@@ -44,6 +37,8 @@ export default class Multirator {
     }
   }
 
+  /* Chainable */
+
   filter(func) {
     return new Multirator(filter(this, func));
   }
@@ -56,8 +51,25 @@ export default class Multirator {
     return new Multirator(reduce(this, func, initialValue));
   }
 
-  each(func) {
-    return new Multirator(each(this, func));
+
+  /* Leaf */
+
+  async forEach(func) {
+    for await (const value of this) {
+      func(value);
+    }
+  }
+
+  async reduce(func, initValue) {
+    let acc = initValue;
+    for await (const value of this) {
+      if (acc === undefined) {
+        acc = value;
+      } else {
+        acc = func(acc, value);
+      }
+    }
+    return acc;
   }
 }
 
@@ -78,12 +90,5 @@ async function* reduce(iterator, func, initialValue) {
   for await (const value of iterator) {
     acc = func(acc, value);
     yield acc;
-  }
-}
-
-async function* each(iterator, func) {
-  for await (const value of iterator) {
-    func(value);
-    yield value;
   }
 }
