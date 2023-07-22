@@ -1,5 +1,8 @@
-export default class Multirator {
+import Iterator from "./Iterator";
+export default class Multirator extends Iterator {
   constructor(iterator) {
+    super(iterator);
+
     let done = false;
     let value;
     let resolver;
@@ -35,55 +38,5 @@ export default class Multirator {
         if (!done) yield value;
       }
     };
-  }
-
-  /* Chainable */
-
-  filter(func) {
-    return new Multirator(filter(this, func));
-  }
-
-  map(func) {
-    return new Multirator(map(this, func));
-  }
-
-  /* Leaf */
-
-  async forEach(func) {
-    for await (const value of this) {
-      func(value);
-    }
-  }
-
-  async reduce(func, initValue) {
-    let acc = initValue;
-    for await (const value of this) {
-      if (acc === undefined) {
-        acc = value;
-      } else {
-        acc = func(acc, value);
-      }
-    }
-    return acc;
-  }
-}
-
-async function* filter(iterator, func) {
-  for await (const value of iterator) {
-    if (func(value)) yield value;
-  }
-}
-
-async function* map(iterator, func) {
-  for await (const value of iterator) {
-    yield func(value);
-  }
-}
-
-async function* reduce(iterator, func, initialValue) {
-  let acc = initialValue;
-  for await (const value of iterator) {
-    acc = func(acc, value);
-    yield acc;
   }
 }
