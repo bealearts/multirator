@@ -13,6 +13,10 @@
     "name": "David Beale",
     "url": "http://bealearts.co.uk"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bealearts/multirator.git"
+  },
   "license": "MIT",
   "devDependencies": {
     "@vitest/coverage-v8": "^0.33.0",
