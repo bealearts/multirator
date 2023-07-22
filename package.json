@@ -1,7 +1,7 @@
 {
   "name": "multirator",
   "version": "0.0.0",
-  "description": "",
+  "description": "Async Iterator which supports multiple consumers",
   "type": "module",
   "main": "src/Multirator.js",
   "scripts": {

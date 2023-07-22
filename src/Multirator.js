@@ -30,11 +30,11 @@ export default class Multirator {
 
     this[Symbol.asyncIterator] = async function* () {
       if (!done && value !== undefined) yield value;
-      while(!done) {
-        await pending;  // TODO: Error handling
+      while (!done) {
+        await pending; // TODO: Error handling
         if (!done) yield value;
       }
-    }
+    };
   }
 
   /* Chainable */
@@ -46,11 +46,6 @@ export default class Multirator {
   map(func) {
     return new Multirator(map(this, func));
   }
-
-  reduce(func, initialValue) {
-    return new Multirator(reduce(this, func, initialValue));
-  }
-
 
   /* Leaf */
 
