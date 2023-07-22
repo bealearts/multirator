@@ -1,4 +1,5 @@
-import Iterator from "./Iterator";
+import Iterator from "./Iterator.js";
+
 export default class Multirator extends Iterator {
   constructor(iterator) {
     super(iterator);
@@ -31,7 +32,7 @@ export default class Multirator extends Iterator {
       }
     })();
 
-    this[Symbol.asyncIterator] = async function* () {
+    this[Symbol.asyncIterator] = async function* iter() {
       if (!done && value !== undefined) yield value;
       while (!done) {
         await pending; // TODO: Error handling

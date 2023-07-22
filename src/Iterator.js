@@ -1,6 +1,6 @@
 export default class Iterator {
   constructor(iterator) {
-    this[Symbol.asyncIterator] = async function* () {
+    this[Symbol.asyncIterator] = async function* iter() {
       for await (const value of iterator) {
         yield value;
       }
@@ -51,14 +51,6 @@ async function* filter(iterator, func) {
 async function* map(iterator, func) {
   for await (const value of iterator) {
     yield func(value);
-  }
-}
-
-async function* reduce(iterator, func, initialValue) {
-  let acc = initialValue;
-  for await (const value of iterator) {
-    acc = func(acc, value);
-    yield acc;
   }
 }
 

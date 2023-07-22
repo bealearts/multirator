@@ -153,16 +153,8 @@ test("Supports multiple consumers with: reduce()", async () => {
   const numbers = new Multirator(numberGenerator(10));
 
   const [result1, result2] = await Promise.all([
-    (async () => {
-      return numbers.reduce((count, value) => {
-        return count + value;
-      }, 0);
-    })(),
-    (async () => {
-      return numbers.reduce((count, value) => {
-        return count + value;
-      });
-    })(),
+    (async () => numbers.reduce((count, value) => count + value, 0))(),
+    (async () => numbers.reduce((count, value) => count + value))(),
   ]);
 
   expect(result1).toEqual(55);
