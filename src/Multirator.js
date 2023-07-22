@@ -1,4 +1,4 @@
-import Iterator from "./Iterator.js";
+import Iterator from './Iterator.js';
 
 export default class Multirator extends Iterator {
   constructor(iterator) {
