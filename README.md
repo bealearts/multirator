@@ -13,5 +13,24 @@ npm i multirator
 ## Usage
 
 ```js
-const numbers = new Multirator(numbersIterator);
+import Multirator from "multirator";
+
+const numbers = new Multirator(someIterable); // 'someIterable' could be an async iterator, async generator or a stream
+
+(async () => {
+  for await (number of numbers) {
+    console.log("Consumer 1", number);
+  }
+})();
+
+(async () => {
+  await numbers
+    .filter((number) => number % 2 !== 0)
+    .forEach((oddNumber) => console.log("Consumer 2", oddNumber));
+})();
+
+(async () => {
+  const total = await numbers.reduce((sum, number) => sum + number, 0);
+  console.log("Consumer 3", total);
+})();
 ```
