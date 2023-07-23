@@ -35,7 +35,7 @@ export default class Multirator extends Iterator {
     this[Symbol.asyncIterator] = async function* iter() {
       if (!done && value !== undefined) yield value;
       while (!done) {
-        await pending; // TODO: Error handling
+        await pending;
         if (!done) yield value;
       }
     };

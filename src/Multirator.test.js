@@ -180,3 +180,61 @@ test('Supports concatenating iterators', async () => {
 
   expect(result).toEqual('12345678910ABCDEFGHIJ');
 });
+
+test('Throws async errors', async () => {
+  async function* withErrorGenerator(max = 100) {
+    let num = 0;
+    while (num < max) {
+      yield new Promise((resolve, reject) => {
+        num++;
+        if (num === 5) {
+          setTimeout(() => reject(new Error('Something Bad')), 0);
+        } else {
+          setTimeout(() => resolve(num), 0);
+        }
+      });
+    }
+  }
+
+  const withError = new Multirator(withErrorGenerator(10));
+
+  let lastValue;
+  let lastError;
+  try {
+    for await (const value of withError) {
+      lastValue = value;
+    }
+  } catch (error) {
+    lastError = error;
+  }
+
+  expect(lastValue).toEqual(4);
+  expect(lastError).toEqual(new Error('Something Bad'));
+});
+
+test('Supports consumers joining after iterator has started', async () => {
+  const numbers = new Multirator(numberGenerator(10));
+
+  const [result1, result2] = await Promise.all([
+    (async () => {
+      let count = 0;
+      for await (const value of numbers) {
+        count += value;
+      }
+      return count;
+    })(),
+    new Promise((resolve) => {
+      setTimeout(async () => {
+        let count = 0;
+        for await (const value of numbers) {
+          count += value;
+        }
+        return resolve(count);
+      }, 10);
+    })
+  ]);
+
+  expect(result1).toEqual(55);
+  expect(result2).toBeGreaterThan(10);
+  expect(result2).toBeLessThan(55);
+});
